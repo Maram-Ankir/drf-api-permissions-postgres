@@ -1,13 +1,13 @@
-from django.shortcuts import render
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from .models import Post
 from .serializers import PostSerializer
+from .permissions import IsOwnerOrReadOnly
 
-
-class PostsList(ListCreateAPIView):
+class PostList(ListCreateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
 
-class PostsDetail(RetrieveUpdateAPIView):
+class PostDetail(RetrieveUpdateDestroyAPIView):
+    permission_classes = (IsOwnerOrReadOnly,)
     queryset = Post.objects.all()
     serializer_class = PostSerializer
